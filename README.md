@@ -135,3 +135,28 @@ cd todobackend/docker/dev
 docker-compose up agent
 docker-compose up test
 ```
+#####5
+######40
+go to todobackend  
+open requirements.txt we can see
+```
+.
+```
+because We insall all dependency from install_requires part from setup.py.  
+others, see MANIFEST.in, in includes all static files.  
+[see here for more](https://docs.python.org/3.5/distutils/sourcedist.html)  
+######43
+```
+cd todobackend/docker/dev
+root@ip:/home/ubuntu/todobackend/docker/dev# mv docker-compose.yml docker-compose-v1.yml
+root@ip:/home/ubuntu/todobackend/docker/dev# mv docker-compose-v2.yml docker-compose.yml
+docker-compose kill
+docker-compose rm -f
+```
+(very important,hard)
+```
+docker-compose build
+docker-compose up agent
+docker-compose up test
+docker-compose up builder
+```

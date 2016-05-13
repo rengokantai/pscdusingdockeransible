@@ -20,7 +20,14 @@ pip install boto boto3 awscli
 
 #####3
 ######17
+copy aws credential and pem file, location:
 ```
+/root/.aws/credentials
+/home/ubuntu/.aws/credentials
+```
+using winscp copy todobackend
+```
+pip install django
 pip install dangorestframework django-core-headers(tested not working) use:
 git clone https://github.com/ottoyiu/django-cors-headers.git
 cd django-cors-headers
@@ -53,11 +60,78 @@ before running mocha test:
 python manage.py migrate --settings=todobackend.settings.test
 python manage.py runserver --settings=todobackend.settings.test
 ```
-go to todobackend-specs
+using winscp copy todobackend-specs
 ```
 curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
 sudo apt-get install -y nodejs
 npm install
 npm install -g mocha
 mocha
+```
+######16
+using winscp copy todobackend-client,then
+```
+cd todobackend-client
+npm install
+bower install (do not use root user)
+```
+test
+```
+http://ip:3000
+address=localhost:8000
+```
+#####4
+######23
+stage (test)-build-release-deploy
+######26
+create dockerfile. in entrypoint.sh,
+```
+exec $@   // get all argument from $1
+```
+######27(very hard)
+```
+root@ip-172:/home/ubuntu/todobackend-base# docker build -t rengokantai/todobackend-base .
+docker run --rm rengokantai/todobackend-base ps
+```
+#####31 build dev and release docker image
+using winscp copy todobackend,then 
+```
+cd todobackend
+docker build -t todobackend-dev -f docker/dev/Dockerfile .
+time docker run --rm todobackend-dev
+```
+
+test cache
+```
+docker run -v /tmp/cache:/cache --entrypoint true --name cache todobackend-dev
+```
+test time(more efficient)
+```
+time docker run --rm --volume-from cache todobackend-dev 
+```
+run in test settings
+```
+time docker run --rm -e DJANGO_SETTINGS_MODULE=todobackend.settings.test --volume-from cache todobackend-dev 
+```
+######32 multi container using docker-compose
+######33
+```
+cd docker/dev
+docker-compose up test
+```
+cleanup
+```
+docker-compose rm -f
+```
+######34(hard, solve unreliable issue)
+using winscp copy  docker-ansible
+```
+cd docker-ansible
+docker build -t rengokantai/ansible .
+```
+then
+```
+cd todobackend/docker/dev
+docker-compose up agent
+docker-compose up test
 ```

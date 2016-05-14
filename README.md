@@ -160,3 +160,32 @@ docker-compose up agent
 docker-compose up test
 docker-compose up builder
 ```
+#####6
+######47
+```
+cd todobackend/docker/release
+```
+######53
+```
+docker-compose build
+docker-comose up agent
+docker-compose run --rm app manage.py collectstatic --noinput(squash input)
+docker-compose run --rm app manage.py migrate --noinput
+```
+#####7
+######61
+make basics
+```
+make test
+make build
+```
+....
+using tab for identation
+```
+.PHONY: test build release
+
+test:
+  echo ""
+build:
+release:
+```
